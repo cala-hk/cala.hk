@@ -1,87 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Set initial state
-    const initialLang = localStorage.getItem('preferredLang') || 'yue'; // Default to Cantonese/Chinese
-    const initialHash = window.location.hash || '#home'; // Get hash from URL or default to #home
-    const initialSectionId = initialHash.substring(1); // Remove '#'
-
-    setLanguage(initialLang);
-    showSection(initialSectionId);
-
-    // Update copyright year
-    document.getElementById('copy-year').textContent = new Date().getFullYear();
-
-    // Add active class to the initially loaded section's nav link
-    updateActiveNav(initialSectionId);
+    // Load header and footer
+    loadComponent('header', 'partials/header.html', () => {
+        // After header loads, set language and update nav
+        const initialLang = localStorage.getItem('preferredLang') || 'yue';
+        setLanguage(initialLang);
+        updateActiveNav();
+    });
+    loadComponent('footer', 'partials/footer.html', () => {
+        // After footer loads, update copyright year
+        document.getElementById('copy-year').textContent = new Date().getFullYear();
+    });
 });
 
-function showSection(sectionId) {
-    // Hide all content sections
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.style.display = 'none';
-    });
+function loadComponent(elementId, url, callback) {
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            const placeholder = document.getElementById(elementId);
+            if (placeholder) {
+                // Create a temporary container to parse the HTML
+                const temp = document.createElement('div');
+                temp.innerHTML = data;
 
-    // Show the target section
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.style.display = 'block';
-        // Update URL hash without jumping
-        if (history.pushState) {
-            history.pushState(null, null, '#' + sectionId);
-        } else {
-            window.location.hash = '#' + sectionId;
-        }
-        updateActiveNav(sectionId); // Update active link style
-    } else {
-        // Fallback to home if section not found
-        document.getElementById('home').style.display = 'block';
-         if (history.pushState) {
-            history.pushState(null, null, '#home');
-        } else {
-            window.location.hash = '#home';
-        }
-        updateActiveNav('home');
-    }
+                // Use a document fragment to hold the nodes to avoid reflows
+                const fragment = document.createDocumentFragment();
+                // Append all children from temp to the fragment
+                while (temp.firstChild) {
+                    fragment.appendChild(temp.firstChild);
+                }
+                
+                // Replace the placeholder with the fragment's content
+                placeholder.parentNode.replaceChild(fragment, placeholder);
+            }
+
+            if (callback) {
+                callback();
+            }
+        })
+        .catch(error => console.error(`Error loading ${url}:`, error));
 }
 
 function setLanguage(lang) {
-    // Hide all language elements
+    // This function remains mostly the same, but we need to ensure it runs after the header is loaded.
+    // The logic is now called in the header's loadComponent callback.
     document.querySelectorAll('.lang-yue, .lang-en').forEach(el => {
         el.style.display = 'none';
     });
 
-    // Show selected language elements
     document.querySelectorAll(`.lang-${lang}`).forEach(el => {
-        // Maintain original display type (inline for spans, block for others if needed)
-        // For simplicity, using 'inline' which works well for spans. Adjust if block elements are used.
-         el.style.display = 'inline';
+        el.style.display = 'inline';
     });
 
-    // Set html lang attribute
     document.documentElement.lang = (lang === 'yue') ? 'yue' : 'en';
 
-    // Store preference
     if (localStorage) {
         localStorage.setItem('preferredLang', lang);
     }
 }
 
-function updateActiveNav(activeSectionId) {
-     const navLinks = document.querySelectorAll('nav ul li a');
-     navLinks.forEach(link => {
-        // Remove '#' from href to compare with sectionId
-        const linkSectionId = link.getAttribute('href').substring(1);
-        if (linkSectionId === activeSectionId) {
+function updateActiveNav() {
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const currentPage = window.location.pathname.split('/').pop();
+
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href').split('/').pop();
+        if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
             link.classList.add('active');
         } else {
-             link.classList.remove('active');
+            link.classList.remove('active');
         }
-     });
+    });
 }
-
-// Handle back/forward button navigation
-window.addEventListener('popstate', function() {
-    const hash = window.location.hash || '#home';
-    const sectionId = hash.substring(1);
-    showSection(sectionId);
-});
