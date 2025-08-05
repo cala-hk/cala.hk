@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+import News from "../components/News.astro";
+---
+
+<Layout title="首頁">
+  <section class="px-6">
+    <h1 class="text-2xl my-8 text-text-light">本會提供考試</h1>
+    <div class="mx-auto flex justify-center gap-4 flex-wrap">
+      <a href="/crat">
+        <img
+          src="/assets/home-crat.png"
+          width="400"
+          class="rounded-lg inline-block"
+          alt="粵音朗讀測試（CRAT）"
+        />
+      </a>
+      <a href="/cope">
+        <img
+          src="/assets/home-cope.png"
+          width="400"
+          class="rounded-lg inline-block"
+          alt="粵語口語水平試（COPE）"
+        />
+      </a>
+    </div>
+    <h1 class="text-2xl my-4 text-text-light">最新消息</h1>
+    <News
+      date="2025-07-26"
+      title="2025 年第 1 次粵音朗讀測試（CRAT）報名連結開放"
+    >
+      <p>
+        <span>
+          撳此連結或掃描下面二維碼報名：
+          <a
+            href="https://gccuny.az1.qualtrics.com/jfe/form/SV_3sfoXH232SAZ7V4"
+            target="_blank"
+            class="text-link hover:underline break-all"
+          >
+            https://gccuny.az1.qualtrics.com/jfe/form/SV_3sfoXH232SAZ7V4
+          </a>
+          ，截止日期為 2025 年 8 月 16 日。測試費用 $500 港幣，不設退款。本屆考試僅提供網上 Zoom 應考，冇現場考試。名額有限，額滿即止。
+        </span>
+      </p>
+      <img
+        src="/assets/crat202501.jpg"
+        class="rounded-lg inline-block max-w-lg my-2"
+        alt="CRAT 202501 海報"
+      />
+    </News>
+    <News date="2025-07-10" title="2025 年第 1 次粵音朗讀測試（CRAT）開放報名">
+      <p class="">
+        粵音朗讀測試（CRAT）2025 年第 1 次測試擬定於 8 月 - 9
+        月期間舉行，測試費用為 $500 港紙，報名表連結即將開放。
+      </p>
+    </News>
+  </section>
+</Layout>

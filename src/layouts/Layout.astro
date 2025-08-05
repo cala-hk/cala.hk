@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title } = Astro.props;
+const lang = Astro.currentLocale;
+const description = Astro.props.description || (lang === 'en'
+  ? 'Applying Cantonese linguistics and sociolinguistics to enhance the effectiveness, efficiency and efficacy of Cantonese. By leveraging technology, we are currently focusing on Cantonese codification and Cantonese proficiency tests.'
+  : '應用粵語語言學同社會語言學去提升粵語嘅效益、效率同效能。借助科技，我哋目前着力編訂粵語字詞嘅形、音、義標準，並開發同定期舉辦粵語測試。');
+---
+
+<!DOCTYPE html>
+<html lang={lang ?? 'yue'} class:list={["scroll-smooth", { "font-yue": lang !== 'en', "font-english": lang === 'en' }]}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>
+			{title} | HKCALA - 香港粵語應用語言學學會 | Hong Kong Cantonese Applied Linguistics Association
+		</title>
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="HKCALA, Hong Kong, Cantonese, Applied Linguistics, Linguistics, Language, CRAT, COPE, Cantonese Test, Cantonese Exam, 粵語, 廣州話, 廣東話，香港, 應用語言學, 語言學, 粵音朗讀測試, 粵語口語水平試"
+		/>
+		<meta property="og:title" content={`${title} | HKCALA`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="/assets/CALA-logo.png" />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:type" content="website" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Chiron+Hei+HK:ital,wght@0,200..900;1,200..900&display=swap"
+			rel="stylesheet"
+		/>
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+		<link rel="icon" href="/assets/CALA-logo-sq.png?v=2" type="image/png" />
+	</head>
+	<body class="bg-bg-alt text-text text-base leading-relaxed pt-16">
+		<Header currentPage={Astro.url.pathname} />
+		<main class="bg-transparent mx-auto max-w-5xl shadow-none rounded-none">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

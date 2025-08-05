@@ -1,0 +1,36 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const { currentLocale, url } = Astro;
+
+// Manually determine the canonical path (path without locale prefix)
+let canonicalPath = url.pathname;
+// 'yue' is the default locale, so it doesn't have a prefix.
+// We only need to strip the prefix for other locales.
+if (currentLocale !== "yue") {
+  const prefix = `/${currentLocale}`;
+  if (url.pathname.startsWith(prefix)) {
+    canonicalPath = url.pathname.substring(prefix.length) || "/";
+  }
+}
+
+const yueUrl = getRelativeLocaleUrl("yue", canonicalPath);
+const enUrl = getRelativeLocaleUrl("en", canonicalPath);
+---
+
+<div class="fixed top-3 right-4 p-2 z-[1010]">
+  <a
+    href={yueUrl}
+    class:list={[
+      "bg-gray-100 text-text-light py-1 px-2.5 ml-1.5 rounded-sm cursor-pointer text-xs font-semibold transition-all duration-250 ease-in-out leading-tight",
+      { "bg-primary text-white": currentLocale === "yue" },
+    ]}>粵</a
+  >
+  <a
+    href={enUrl}
+    class:list={[
+      "bg-gray-100 text-text-light py-1 px-2.5 ml-1.5 rounded-sm cursor-pointer text-xs font-semibold transition-all duration-250 ease-in-out leading-tight",
+      { "bg-primary text-white": currentLocale === "en" },
+    ]}>Eng</a
+  >
+</div>

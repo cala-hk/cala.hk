@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #d0137e;
+  --color-secondary: #662c93;
+  --color-text-dumb: #743088;
+  --color-text-light: #982587;
+  --color-link: #0056b3;
+  --color-link-hover: #003d82;
+}
+
+.font-yue {
+  font-family: 'Chiron Hei HK', sans-serif;
+}
+
+.font-english {
+  font-family: "DM Sans", sans-serif;
+}

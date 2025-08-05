@@ -1,0 +1,60 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import News from "../../components/News.astro";
+---
+
+<Layout title="Home">
+  <section class="px-6">
+    <h1 class="text-2xl my-8 text-text-light">Tests We Offer</h1>
+    <div class="mx-auto flex justify-center gap-4 flex-wrap">
+      <a href="/en/crat">
+        <img
+          src="/assets/home-crat.png"
+          width="400"
+          class="rounded-lg inline-block"
+          alt="Cantonese Read Aloud Test (CRAT)"
+        />
+      </a>
+      <a href="/en/cope">
+        <img
+          src="/assets/home-cope.png"
+          width="400"
+          class="rounded-lg inline-block"
+          alt="Cantonese Oral Proficiency Exam (COPE)"
+        />
+      </a>
+    </div>
+    <h1 class="text-2xl my-8 text-text-light">Latest News</h1>
+    <News
+      date="2025-07-26"
+      title="Sign up link is out for the 1st CRAT test of 2025"
+    >
+      <p class="mb-5">
+        Use this link or scan the QR code below to sign up:
+        <a
+          href="https://gccuny.az1.qualtrics.com/jfe/form/SV_3sfoXH232SAZ7V4"
+          target="_blank"
+          class="text-link hover:text-link-hover hover:underline break-all"
+        >
+          https://gccuny.az1.qualtrics.com/jfe/form/SV_3sfoXH232SAZ7V4
+        </a>. Deadline is Auguest 16, 2025. Test fee is $500 HKD with no refund.
+        This test offering is online (Zoom) only. No on-site option available.
+      </p>
+      <img
+        src="/assets/crat202501.jpg"
+        class="rounded-lg inline-block max-w-xl my-2"
+        alt="CRAT 202501 Poster"
+      />
+    </News>
+    <News
+      date="2025-07-10"
+      title="The 1st CRAT test of 2025 is now opened to sign up"
+    >
+      <p class="mb-0">
+        The 1st Cantonese Read Aloud Test (CRAT) of 2025 is planned to be held
+        during August - September, 2025. Test fee is $500 HKD. Sign up form will
+        be released soon.
+      </p>
+    </News>
+  </section>
+</Layout>

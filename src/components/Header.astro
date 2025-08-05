@@ -1,0 +1,80 @@
+---
+import LangSwitcher from "./LangSwitcher.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface NavLink {
+  href: string;
+  yue: string;
+  en: string;
+}
+
+const navLinks: NavLink[] = [
+  {
+    href: "/crat",
+    yue: "粵音朗讀測試 (CRAT)",
+    en: "Read-aloud Test (CRAT)",
+  },
+  {
+    href: "/cope",
+    yue: "粵語口語水平試 (COPE)",
+    en: "Oral Proficiency Exam (COPE)",
+  },
+  { href: "/about", yue: "學會簡介", en: "About" },
+];
+
+const currentLocale = Astro.currentLocale;
+const currentPage = Astro.url.pathname;
+---
+
+<header
+  class="bg-white xl:fixed xl:top-0 xl:left-0 xl:right-0 z-1000 w-full transition-all duration-250 ease-in-out"
+>
+  <nav
+    class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between px-4"
+  >
+    <a
+      href={getRelativeLocaleUrl(currentLocale || "yue", "/")}
+      class="flex gap-4 px-4 justify-center align-middle items-center text-text-dumb font-semibold py-2"
+    >
+      <img
+        src="/assets/CALA-logo-sq.png"
+        alt="HKCALA Logo"
+        class="h-[48px] mx-auto"
+      />
+      <h1 class="text-xl max-w-sm">
+        {
+          currentLocale === "en"
+            ? "Hong Kong Cantonese Applied Linguistics Association"
+            : "香港粵語應用語言學學會"
+        }
+        <small class="">(HKCALA)</small>
+      </h1>
+    </a>
+    <ul
+      class="py-2 list-none text-center flex flex-col lg:flex-row justify-center flex-wrap"
+    >
+      {
+        navLinks.map((link) => {
+          if (!currentLocale) return null;
+          const localizedHref = getRelativeLocaleUrl(currentLocale, link.href);
+          const isActive = currentPage === localizedHref;
+          return (
+            <li class="block py-2">
+              <a
+                href={localizedHref}
+                class:list={[
+                  "px-4 rounded-none transition-all duration-250 ease-in-out no-underline text-base tracking-wider",
+                  { "text-primaryborder-primary": isActive },
+                ]}
+                aria-current={isActive ? "page" : false}
+              >
+                {currentLocale === "en" ? link.en : link.yue}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</header>
+<LangSwitcher />
